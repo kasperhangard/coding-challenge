@@ -1,8 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import { HttpService, Injectable, Logger } from '@nestjs/common';
+import { CronExpression, SchedulerRegistry } from '@nestjs/schedule';
+import { CreateWorkerDto } from 'apps/data-streams/src/create-worker-job.dto';
+import { KillWorkerDto } from 'apps/data-streams/src/kill-worker-job.dto';
+import { AxiosResponse } from 'axios';
+import { CronJob } from 'cron';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class WorkerService {
+  constructor(
+    private schedulerRegistry: SchedulerRegistry, 
+    private httpService: HttpService) {}
+
+
   getHello(): string {
     return 'Hello World!';
   }
+
+  private readonly logger = new Logger();
+
+  createWorker(body: CreateWorkerDto): void {
+    try {
+      this.logger.log(`Creating Cron job for ${body.endpoint} with an interval of ${body.interval}`);
+      const job = new CronJob(
+        CronExpression['EVERY_5_SECONDS'],
+        async () => await this.fetchData(body.endpoint),
+      );
+      console.log("Job created")
+
+      this.schedulerRegistry.addCronJob(body.endpoint, job);
+      console.log("staring job")
+      job.start();
+      this.logger.log(`Cron job for ${body.endpoint} created.`);
+
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
+
+  killWorker(body: KillWorkerDto): void {
+    this.logger.log(`Killing the worker for ${body.endpoint}`);
+    this.schedulerRegistry.deleteCronJob(body.endpoint);
+  }
+
+  private fetchData(endpoint: string): Promise<AxiosResponse<string>>{
+    try {
+      console.log('fetching')
+      return this.httpService.get(endpoint).toPromise();
+    } catch(err){
+      this.logger.error(err)
+    }
+  }
+
 }
