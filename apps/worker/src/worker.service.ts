@@ -48,6 +48,13 @@ export class WorkerService {
     this.schedulerRegistry.deleteCronJob(body.endpoint);
   }
 
+  killAllWorkers(): void {
+    this.logger.log(`Killing all workers`);
+    for (let jobEndpoint of this.schedulerRegistry.getCronJobs().keys()){
+      this.killWorker(new KillWorkerDto(jobEndpoint));
+    }
+  }
+
   private fetchData(endpoint: string): Promise<AxiosResponse<string>>{
     try {
       console.log('fetching')

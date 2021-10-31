@@ -33,12 +33,11 @@ export class WorkerController {
     this.workerService.killWorker(data);
   }
 
-
-  // @MessagePattern('http://api.open-notify.org/astros')
-  // bla(@Payload() data: KillWorkerDto, @Ctx() context: RmqContext){
-  //   const channel = context.getChannelRef();
-  //   const originalMsg = context.getMessage();
-  //   channel.ack(originalMsg);
-  // }
-
+  @MessagePattern('killAllWorkers')
+  killAllWorkers(@Ctx() context: RmqContext) {
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+    channel.ack(originalMsg);
+    this.workerService.killAllWorkers();
+  }
 }

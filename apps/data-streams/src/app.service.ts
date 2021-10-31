@@ -6,6 +6,7 @@ import { KillWorkerDto } from './kill-worker-job.dto';
 
 @Injectable()
 export class AppService {
+
   constructor(
     @Inject('WORKER_SERVICE') private readonly clientProxy: ClientProxy,
   ) {}
@@ -23,6 +24,11 @@ export class AppService {
   killWorker(body: KillWorkerDto): string {
     this.clientProxy.emit('killWorker', body)
     return `killed worker for ${body.endpoint}`
+  }
+
+  killAllWorkers(): string {
+    this.clientProxy.emit('killAllWorkers', '')
+    return `killed all workers`
   }
 
   getHello(): string {

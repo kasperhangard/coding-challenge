@@ -28,6 +28,11 @@ export class AppController {
     return this.appService.killWorker(body);
   }
 
+  @Post('/killAllWorkers')
+  killAllWorkers(): string {
+    return this.appService.killAllWorkers();
+  }
+
   @Get('/data')
   getData(): string {
     return JSON.stringify(this.dataDict);

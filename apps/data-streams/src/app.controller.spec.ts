@@ -13,7 +13,7 @@ describe('AppController', () => {
           name: 'DATA_SERVICE',
           transport: Transport.RMQ,
           options: {
-            urls: ['amqps://ljalvdxj:Mv_tgM_sTu2N833j3gMmGQdhcGGhfmQg@hawk.rmq.cloudamqp.com/ljalvdxj'],
+            urls: [process.env.CLOUD_AMQPS_URL],
             queue: 'worker_queue',
             noAck: false,
             queueOptions: {

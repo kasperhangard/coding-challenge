@@ -1,4 +1,5 @@
 import { HttpModule, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WorkerController } from './worker.controller';
@@ -6,12 +7,13 @@ import { WorkerService } from './worker.service';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ClientsModule.register([
       {
         name: 'DATA_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqps://ljalvdxj:Mv_tgM_sTu2N833j3gMmGQdhcGGhfmQg@hawk.rmq.cloudamqp.com/ljalvdxj'],
+          urls: [process.env.CLOUD_AMQPS_URL],
           queue: 'data_queue',
           noAck: false,
           queueOptions: {
