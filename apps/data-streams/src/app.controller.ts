@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { ClientProxy, Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { extractedData } from 'apps/worker/src/extracted-data.dto';
 import { get } from 'http';
@@ -33,8 +33,14 @@ export class AppController {
     return this.appService.killAllWorkers();
   }
 
+  // @Get('/data/:endpoint')
+  // getData(@Param('endpoint') endpoint): string {
+  //   console.log("here")
+  //   return JSON.stringify(this.dataDict[endpoint]);
+  // }
+
   @Get('/data')
-  getData(): string {
+  getAllData(): string {
     return JSON.stringify(this.dataDict);
   }
 
@@ -46,8 +52,6 @@ export class AppController {
     this.addEntryToDict(data);
     channel.ack(originalMsg);
   }
-
-
 
   addEntryToDict = (entry: extractedData) => {
     this.dataDict[entry.endpoint] ? this.dataDict[entry.endpoint].push(entry) : this.dataDict[entry.endpoint] = [{entry}]
