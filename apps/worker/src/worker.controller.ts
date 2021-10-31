@@ -15,12 +15,12 @@ export class WorkerController {
   //   console.log(data)
   // }
 
-  @MessagePattern('testRMQ')
-  TestRMQ(@Payload() data: string, @Ctx() context: RmqContext) {
-    const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-    console.log(data)
-    channel.ack(originalMsg);
-  }
+  // @MessagePattern('open-notify/getcurrentposition')
+  // TestRMQ(@Payload() data: string, @Ctx() context: RmqContext) {
+  //   const channel = context.getChannelRef();
+  //   const originalMsg = context.getMessage();
+  //   console.log(data)
+  //   channel.ack(originalMsg);
+  // }
 
 }

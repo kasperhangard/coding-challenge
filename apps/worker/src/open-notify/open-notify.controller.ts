@@ -11,8 +11,7 @@ export class OpenNotifyController {
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
     
-    this.openNotifyService.getCurrentPosition().toPromise().then(res => console.log(res))
-    
+    this.openNotifyService.getCurrentPosition().toPromise().then(res => console.log(res.data))
     channel.ack(originalMsg);
   }
 
@@ -21,8 +20,8 @@ export class OpenNotifyController {
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
     
-    this.openNotifyService.getCurrentAstronauts().toPromise().then(res => console.log(res))
-    
+    this.openNotifyService.getCurrentAstronauts().toPromise().then(res => console.log(res.data))
+    console.log("open-notify/getcurrentastronauts")
     channel.ack(originalMsg);
   }
 
