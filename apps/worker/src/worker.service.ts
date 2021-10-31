@@ -25,7 +25,7 @@ export class WorkerService {
     try {
       this.logger.log(`Creating Cron job for ${body.endpoint} with an interval of ${body.interval}`);
       const job = new CronJob(
-        CronExpression['EVERY_5_SECONDS'],
+        CronExpression[body.interval],
         async () => 
         {const fetchedData = await this.fetchData(body.endpoint);
           const dataObject = new extractedData(body.endpoint, new Date(), fetchedData.data);
