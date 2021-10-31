@@ -10,7 +10,7 @@ describe('AppController', () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [ClientsModule.register([
         {
-          name: 'WORKER_SERVICE',
+          name: 'DATA_SERVICE',
           transport: Transport.RMQ,
           options: {
             urls: ['amqps://ljalvdxj:Mv_tgM_sTu2N833j3gMmGQdhcGGhfmQg@hawk.rmq.cloudamqp.com/ljalvdxj'],

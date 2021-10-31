@@ -1,16 +1,18 @@
-import { HttpService, Injectable, Logger } from '@nestjs/common';
+import { HttpService, Inject, Injectable, Logger } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { CronExpression, SchedulerRegistry } from '@nestjs/schedule';
 import { CreateWorkerDto } from 'apps/data-streams/src/create-worker-job.dto';
 import { KillWorkerDto } from 'apps/data-streams/src/kill-worker-job.dto';
 import { AxiosResponse } from 'axios';
 import { CronJob } from 'cron';
-import { Observable } from 'rxjs';
+import { extractedData } from './extracted-data.dto';
 
 @Injectable()
 export class WorkerService {
   constructor(
     private schedulerRegistry: SchedulerRegistry, 
-    private httpService: HttpService) {}
+    private httpService: HttpService,
+    @Inject('DATA_SERVICE') private readonly clientProxy: ClientProxy) {}
 
 
   getHello(): string {
@@ -24,7 +26,10 @@ export class WorkerService {
       this.logger.log(`Creating Cron job for ${body.endpoint} with an interval of ${body.interval}`);
       const job = new CronJob(
         CronExpression['EVERY_5_SECONDS'],
-        async () => await this.fetchData(body.endpoint),
+        async () => 
+        {const fetchedData = await this.fetchData(body.endpoint);
+          const dataObject = new extractedData(body.endpoint, new Date(), fetchedData.data);
+          this.clientProxy.emit('data',  dataObject)}
       );
       console.log("Job created")
 
@@ -53,3 +58,4 @@ export class WorkerService {
   }
 
 }
+

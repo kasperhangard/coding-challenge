@@ -8,11 +8,11 @@ import { WorkerService } from './worker.service';
   imports: [
     ClientsModule.register([
       {
-        name: 'WORKER_SERVICE',
+        name: 'DATA_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: ['amqps://ljalvdxj:Mv_tgM_sTu2N833j3gMmGQdhcGGhfmQg@hawk.rmq.cloudamqp.com/ljalvdxj'],
-          queue: 'worker_queue',
+          queue: 'data_queue',
           noAck: false,
           queueOptions: {
             durable: false

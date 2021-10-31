@@ -21,16 +21,16 @@ export class WorkerController {
   createWorker(@Payload() data: CreateWorkerDto, @Ctx() context: RmqContext) {
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
-    this.workerService.createWorker(data);
     channel.ack(originalMsg);
+    this.workerService.createWorker(data);
   }
 
   @MessagePattern('killWorker')
   killWorker(@Payload() data: KillWorkerDto, @Ctx() context: RmqContext) {
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
-    this.workerService.killWorker(data);
     channel.ack(originalMsg);
+    this.workerService.killWorker(data);
   }
 
 
