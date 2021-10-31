@@ -1,3 +1,42 @@
+```
+I am still not dont with this project, and expect to be done sometime tuesday evening.
+```
+
+# preface
+This is my first time actually using NestJS. I have heard a lot about it, and it has been on my list of frameworks to learn, but had yet to come up, until now.
+Overall it seems brilliant, but i am sure that there will be a lot of things that does not live up to best practices. I am sure i will use NestJS for an upcoming hobby projec though, so i will probably get a lot more experience then.
+
+To run, use 
+```
+yarn start
+```
+```
+yarn start worker
+```
+
+to get started with the API, hit **GET localhost:3000/**
+
+
+
+
+
+
+# Solution
+### Internal Communication
+As internal Communication, RabbitMQ was used. RabbitMQ was chosen as the most popular Message Queue system. 
+Message Queuing was chosen, as to decouple the services, allowing for great scalability. 
+The system looks for an CLOUD_AMQP_URL entry in .env, you can provide your own, or i can send you the one i set up.
+I decided to go with Cloud AMQP, in order to reduce dependency of installing a broker for the system to run.
+
+### Worker endpoint
+The worker was made as generic as possible, under the assumption that the end user has a good technical knowledge.
+The user can query any URL, and specify their own interval from a list of Cron Enums.
+Some issues that arise from this, is the risk of attacks, from quering a malicious API. 
+
+### Data Storage
+The data recieved from the worker is stored in memory for now, as the assignment asks to store the data in **data-streams**.
+Since this system is rather generic, a persistant storage would probably include some form of NOSQL.
+
 # Welcome to Welds coding-challenge
 
 ## Introduction

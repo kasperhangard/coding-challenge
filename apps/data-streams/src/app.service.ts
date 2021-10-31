@@ -32,6 +32,22 @@ export class AppService {
   }
 
   getHello(): string {
-    return 'Hello World!';
+    return `Hello world!
+
+    This API provides a couple of different endpoints.
+
+    To Create a worker, hit:
+    POST http://localhost:3000/createWorker with a body of {"endpoint": URL_TO_EXTRACT_FROM,"interval": CRON_EXPRESSION_ENUM}
+    example: {"endpoint": "http://api.open-notify.org/astros","interval": "EVERY_5_MINUTES"}
+    
+    To kill a worker, hit:
+    POST http://localhost:3000/killWorker with a body of {"endpoint": URL_TO_EXTRACT_FROM}
+    example: {"endpoint": "http://api.open-notify.org/astros"}
+    
+    To kill all workers, hit:
+    POST http://localhost:3000/killAllWorkers
+    
+    To retireve the data collected by the workers, hit:
+    GET http://localhost:3000/data`;
   }
 }
