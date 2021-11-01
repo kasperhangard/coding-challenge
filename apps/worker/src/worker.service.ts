@@ -1,10 +1,10 @@
 import { HttpService, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CronExpression, SchedulerRegistry } from '@nestjs/schedule';
-import { CreateWorkerDto } from 'apps/data-streams/src/create-worker-job.dto';
-import { KillWorkerDto } from 'apps/data-streams/src/kill-worker-job.dto';
 import { AxiosResponse } from 'axios';
 import { CronJob } from 'cron';
+import { CreateWorkerDto } from '../../data-streams/src/create-worker-job.dto';
+import { KillWorkerDto } from '../../data-streams/src/kill-worker-job.dto';
 import { extractedData } from './extracted-data.dto';
 
 @Injectable()

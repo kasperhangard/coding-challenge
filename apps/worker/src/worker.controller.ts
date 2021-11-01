@@ -1,8 +1,8 @@
 import { Controller, Logger } from '@nestjs/common';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
+import { CreateWorkerDto } from '../../data-streams/src/create-worker-job.dto';
+import { KillWorkerDto } from '../../data-streams/src/kill-worker-job.dto';
 import { WorkerService } from './worker.service';
-import { CreateWorkerDto } from 'apps/data-streams/src/create-worker-job.dto';
-import { KillWorkerDto } from 'apps/data-streams/src/kill-worker-job.dto';
 
 
 @Controller()

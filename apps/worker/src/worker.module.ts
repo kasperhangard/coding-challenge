@@ -8,6 +8,11 @@ import { WorkerService } from './worker.service';
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    HttpModule.register({
+      timeout: 5000,
+      maxRedirects: 5,
+    }),
+    ScheduleModule.forRoot(),
     ClientsModule.register([
       {
         name: 'DATA_SERVICE',
@@ -22,11 +27,7 @@ import { WorkerService } from './worker.service';
         },
       },
     ]),
-    ScheduleModule.forRoot(),
-    HttpModule.register({
-      timeout: 5000,
-      maxRedirects: 5,
-    }),],
+  ],
   controllers: [WorkerController],
   providers: [WorkerService],
 })
