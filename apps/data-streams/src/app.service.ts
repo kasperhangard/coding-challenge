@@ -13,10 +13,6 @@ export class AppService {
 
   createWorker(body: CreateWorkerDto): string {
 
-    if(Object.keys(CronExpression).includes(body.interval) == false){
-      return `Invalid interval specified. Please use one of the following:\n${Object.keys(CronExpression).join('\n')}`
-    }
-
     this.clientProxy.emit('createWorker', body)
     return `Created worker for ${body.endpoint} with an interval of ${body.interval}`
   }
