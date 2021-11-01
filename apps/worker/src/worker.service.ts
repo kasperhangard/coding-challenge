@@ -10,9 +10,9 @@ import { extractedData } from './extracted-data.dto';
 @Injectable()
 export class WorkerService {
   constructor(
-    private schedulerRegistry: SchedulerRegistry, 
+    private schedulerRegistry: SchedulerRegistry,
     private httpService: HttpService,
-    @Inject('DATA_SERVICE') private readonly clientProxy: ClientProxy) {}
+    @Inject('DATA_SERVICE') private readonly clientProxy: ClientProxy) { }
 
 
   getHello(): string {
@@ -26,10 +26,11 @@ export class WorkerService {
       this.logger.log(`Creating Cron job for ${body.endpoint} with an interval of ${body.interval}`);
       const job = new CronJob(
         CronExpression[body.interval],
-        async () => 
-        {const fetchedData = await this.fetchData(body.endpoint);
+        async () => {
+          const fetchedData = await this.fetchData(body.endpoint);
           const dataObject = new extractedData(body.endpoint, new Date(), fetchedData.data);
-          this.clientProxy.emit('data',  dataObject)}
+          this.clientProxy.emit('data', dataObject)
+        }
       );
       console.log("Job created")
 
@@ -44,22 +45,34 @@ export class WorkerService {
   }
 
   killWorker(body: KillWorkerDto): void {
-    this.logger.log(`Killing the worker for ${body.endpoint}`);
-    this.schedulerRegistry.deleteCronJob(body.endpoint);
+
+    try {
+      this.logger.log(`Killing the worker for ${body.endpoint}`);
+
+      this.schedulerRegistry.deleteCronJob(body.endpoint);
+    } catch (err) {
+      this.logger.error(err)
+    }
+
   }
 
   killAllWorkers(): void {
-    this.logger.log(`Killing all workers`);
-    for (let jobEndpoint of this.schedulerRegistry.getCronJobs().keys()){
-      this.killWorker(new KillWorkerDto(jobEndpoint));
+
+    try {
+      this.logger.log(`Killing all workers`);
+
+      for (let jobEndpoint of this.schedulerRegistry.getCronJobs().keys()) {
+        this.killWorker(new KillWorkerDto(jobEndpoint));
+      }
+    } catch (err) {
+      this.logger.error(err)
     }
   }
 
-  private fetchData(endpoint: string): Promise<AxiosResponse<string>>{
+  private fetchData(endpoint: string): Promise<AxiosResponse<string>> {
     try {
-      console.log('fetching')
       return this.httpService.get(endpoint).toPromise();
-    } catch(err){
+    } catch (err) {
       this.logger.error(err)
     }
   }
