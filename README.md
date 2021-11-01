@@ -1,10 +1,6 @@
-```
-I am still not dont with this project, and expect to be done sometime tuesday evening.
-```
-
 # preface
 This is my first time actually using NestJS. I have heard a lot about it, and it has been on my list of frameworks to learn, but had yet to come up, until now.
-Overall it seems brilliant, but i am sure that there will be a lot of things that does not live up to best practices. I am sure i will use NestJS for an upcoming hobby projec though, so i will probably get a lot more experience then.
+Overall it seems brilliant, but i am sure that there will be a lot of things that does not live up to best practices. I am sure i will use NestJS for an upcoming hobby project though, so i will probably get a lot more experience then.
 
 To run, use 
 ```
@@ -31,19 +27,32 @@ I decided to go with Cloud AMQP, in order to reduce dependency of installing a b
 ### Worker endpoint
 The worker was made as generic as possible, under the assumption that the end user has a good technical knowledge.
 The user can query any URL, and specify their own interval from a list of Cron Enums.
-Some issues that arise from this, is the risk of attacks, from quering a malicious API. 
+Some issues that arise from this, is the risk of attacks, from querying a malicious API. 
 
 ### Data Storage
-The data recieved from the worker is stored in memory for now, as the assignment asks to store the data in **data-streams**.
+The data received from the worker is stored in memory for now, as the assignment asks to store the data in **data-streams**.
+
+### Data Structure
+The data returned from the **GET localhost:3000/data** endpoint is a dictionary of datapoints, based on endpoint. 
+```
+├── http://api.open-notify.org/astros
+│   ├── entry
+│   ├── entry
+│   └── entry
+├── http://api.open-notify.org/iss-now
+    ├── entry
+    ├── entry
+    └── entry
+```
 
 ### Future Work
-#### Data Persistance
-Storing the data in-memory is by no means a long-term solution, and some form of peristant storage must be implemented, 
+#### Data Persistence
+Storing the data in-memory is by no means a long-term solution, and some form of persistant storage must be implemented, 
 this implementation though, will depend on requirements from the end user, where requirements such as quick response times
-will help us digure out whether something like redis should be implemented, or if we can rely solely on a large database.
+will help us figure out whether something like redis should be implemented, or if we can rely solely on a large database.
 Seeing as the API is rather generic, the data schemas will not be known beforehand, and as such, NOSQL will probably be of choice. 
 
-#### Cron Job Persistance
+#### Cron Job Persistence
 Since the worker service will start a cron job, when requested, the future fulfillment of said requests relies on these cron jobs.
 If the worker were to crash, these jobs would be lost, and as such the data consumers expected to be extracted would not be.
 I would like to figure out in the future, how to persist these cron jobs, so that when a new worker is started, it can resume the task.
