@@ -11,7 +11,7 @@ import { ConfigModule } from '@nestjs/config';
         name: 'WORKER_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.CLOUD_AMQPS_URL],
+          urls: [process.env.CLOUD_AMQP_URL],
           queue: 'worker_queue',
           noAck: false,
           queueOptions: {

@@ -8,7 +8,7 @@ const initMicroservice = async (app: INestApplication) => {
   app.connectMicroservice({
       transport: Transport.RMQ,
       options: {
-        urls: [process.env.CLOUD_AMQPS_URL],
+        urls: [process.env.CLOUD_AMQP_URL],
         queue: 'data_queue',
         noAck: false,
         queueOptions: {
