@@ -18,21 +18,21 @@ to get started with the API, hit **GET localhost:3000/**
 
 
 # Solution
-### Internal Communication
+## Internal Communication
 As internal Communication, RabbitMQ was used. RabbitMQ was chosen as the most popular Message Queue system. 
 Message Queuing was chosen, as to decouple the services, allowing for great scalability. 
 The system looks for an CLOUD_AMQP_URL entry in .env, you can provide your own, or i can send you the one i set up.
 I decided to go with Cloud AMQP, in order to reduce dependency of installing a broker for the system to run.
 
-### Worker endpoint
+## Worker endpoint
 The worker was made as generic as possible, under the assumption that the end user has a good technical knowledge.
 The user can query any URL, and specify their own interval from a list of Cron Enums.
 Some issues that arise from this, is the risk of attacks, from querying a malicious API. 
 
-### Data Storage
+## Data Storage
 The data received from the worker is stored in memory for now, as the assignment asks to store the data in **data-streams**.
 
-### Data Structure
+## Data Structure
 The data returned from the **GET localhost:3000/data** endpoint is a dictionary of datapoints, based on endpoint. 
 ```
 ├── http://api.open-notify.org/astros
@@ -45,35 +45,37 @@ The data returned from the **GET localhost:3000/data** endpoint is a dictionary 
     └── entry
 ```
 
-### Future Work
-#### Data Persistence
+## Tests
+There are tests written for the datastream, as well as e2e. 
+
+# Future Work
+## Data Persistence
 Storing the data in-memory is by no means a long-term solution, and some form of persistant storage must be implemented, 
 this implementation though, will depend on requirements from the end user, where requirements such as quick response times
 will help us figure out whether something like redis should be implemented, or if we can rely solely on a large database.
 Seeing as the API is rather generic, the data schemas will not be known beforehand, and as such, NOSQL will probably be of choice. 
 
-#### Cron Job Persistence
+## Cron Job Persistence
 Since the worker service will start a cron job, when requested, the future fulfillment of said requests relies on these cron jobs.
 If the worker were to crash, these jobs would be lost, and as such the data consumers expected to be extracted would not be.
 I would like to figure out in the future, how to persist these cron jobs, so that when a new worker is started, it can resume the task.
 
-#### Authorization
+## Authorization
 I am not at all handling Authorization, neither for the user to the data-stream, nor for the user to their target API through the worker.
 This is something that should be handled in the future, in order to control who has access to the data-stream, as well as to allow the
 end users to utilize APIs that require Authorization for the worker to fetch the target data.
 
-#### Planning Of Cron Jobs
+## Planning Of Cron Jobs
 The current Cron job system should be quite easily expandable to facilitate planning of these Cron jobs. This would allow the user to
 not only fetch every 5 minutes, but to do so only in a specific time window, or every 5 minutes, every other day, from 12:00 to 19:00.
 
-### Tests
-There are tests written for the datastream, as well as e2e. 
-
-### Notes During Development
+# Notes During Development
 Initially i decided to go with a rather specific API, where each API would have a featureModule, allowing us to expand the service with more modules.
 This would grant us the knowledge of the data that is fetched, allowing us to do better transformations, as well as guide the user better.
 I decided to discard this idea, and go with a generic approach, in order for the system to be much easier to maintain, and not lock the end users
 into a specific API or set of APIs.
+
+
 
 # Welcome to Welds coding-challenge
 
