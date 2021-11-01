@@ -35,7 +35,36 @@ Some issues that arise from this, is the risk of attacks, from quering a malicio
 
 ### Data Storage
 The data recieved from the worker is stored in memory for now, as the assignment asks to store the data in **data-streams**.
-Since this system is rather generic, a persistant storage would probably include some form of NOSQL.
+
+### Future Work
+#### Data Persistance
+Storing the data in-memory is by no means a long-term solution, and some form of peristant storage must be implemented, 
+this implementation though, will depend on requirements from the end user, where requirements such as quick response times
+will help us digure out whether something like redis should be implemented, or if we can rely solely on a large database.
+Seeing as the API is rather generic, the data schemas will not be known beforehand, and as such, NOSQL will probably be of choice. 
+
+#### Cron Job Persistance
+Since the worker service will start a cron job, when requested, the future fulfillment of said requests relies on these cron jobs.
+If the worker were to crash, these jobs would be lost, and as such the data consumers expected to be extracted would not be.
+I would like to figure out in the future, how to persist these cron jobs, so that when a new worker is started, it can resume the task.
+
+#### Authorization
+I am not at all handling Authorization, neither for the user to the data-stream, nor for the user to their target API through the worker.
+This is something that should be handled in the future, in order to control who has access to the data-stream, as well as to allow the
+end users to utilize APIs that require Authorization for the worker to fetch the target data.
+
+#### Planning Of Cron Jobs
+The current Cron job system should be quite easily expandable to facilitate planning of these Cron jobs. This would allow the user to
+not only fetch every 5 minutes, but to do so only in a specific time window, or every 5 minutes, every other day, from 12:00 to 19:00.
+
+### Tests
+There are tests written for the datastream, as well as e2e. 
+
+### Notes During Development
+Initially i decided to go with a rather specific API, where each API would have a featureModule, allowing us to expand the service with more modules.
+This would grant us the knowledge of the data that is fetched, allowing us to do better transformations, as well as guide the user better.
+I decided to discard this idea, and go with a generic approach, in order for the system to be much easier to maintain, and not lock the end users
+into a specific API or set of APIs.
 
 # Welcome to Welds coding-challenge
 
